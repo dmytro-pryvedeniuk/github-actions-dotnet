@@ -13,6 +13,6 @@ public class WeatherForecastTests
             TemperatureC = 0
         };
 
-        weatherForecast.TemperatureF.Should().Be(30);
+        weatherForecast.TemperatureF.Should().Be(32);
     }
 }
