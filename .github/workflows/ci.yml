@@ -8,9 +8,6 @@ permissions:
   id-token: write
   contents: read
 
-env:
-  APP_NAME: justy
-
 jobs:
   build:
     name: CI
@@ -41,7 +38,7 @@ jobs:
     uses: ./.github/workflows/step-deploy.yml
     with:
       environment: dev
-      app_name: ${{ env.APP_NAME }}
+      app_name: ${{ vars.APP_NAME }}
     secrets: inherit
 
   deploy_prod:
@@ -50,5 +47,5 @@ jobs:
     uses: ./.github/workflows/step-deploy.yml
     with:
       environment: prod
-      app_name: ${{ env.APP_NAME }}
+      app_name: ${{ vars.APP_NAME }}
     secrets: inherit
