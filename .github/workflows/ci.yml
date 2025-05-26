@@ -1,8 +1,5 @@
 name: CI
 
-env:
-  APP_NAME: justy
-
 on:
   push:
     branches: ["main", "infra-as-code"]
@@ -10,6 +7,9 @@ on:
 permissions:
   id-token: write
   contents: read
+
+env:
+  APP_NAME: justy
 
 jobs:
   build:
@@ -41,7 +41,7 @@ jobs:
     uses: ./.github/workflows/step-deploy.yml
     with:
       environment: dev
-      app_name: $APP_NAME
+      app_name: ${{ env.APP_NAME }}
     secrets: inherit
 
   deploy_prod:
@@ -50,5 +50,5 @@ jobs:
     uses: ./.github/workflows/step-deploy.yml
     with:
       environment: prod
-      app_name: $APP_NAME
+      app_name: ${{ env.APP_NAME }}
     secrets: inherit
