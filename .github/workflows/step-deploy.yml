@@ -3,13 +3,10 @@ name: "Step - deploy"
 on:
   workflow_call:
     inputs:
-      env:
+      environment:
         required: true
         type: string
       app_name:
-        required: true
-        type: string
-      resource_group_name:
         required: true
         type: string
     secrets:
@@ -20,11 +17,14 @@ on:
       AZURE_SUBSCRIPTION_ID:
         required: true
 
+env:
+  resource_group_name: rg-${{ inputs.app_name }}-${{inputs.environment}}
+
 jobs:
   deploy:
-    name: Deploy ${{ inputs.env }}
+    name: Deploy ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
+    environment: ${{ inputs.environment }}
 
     steps:
       - uses: actions/download-artifact@v4
@@ -42,14 +42,14 @@ jobs:
       - name: Run Bicep
         run: |
           az deployment group create \
-              --name ${{ inputs.env }}-deployment-${{ github.run_number }} \
+              --name ${{ inputs.environment }}-deployment-${{ github.run_number }} \
               --template-file infrastructure/main.bicep \
-              --resource-group ${{ inputs.resource_group_name }} \
+              --resource-group ${{ env.resource_group_name }} \
               --parameters appName=${{ inputs.app_name }} \
               --verbose
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
-          app-name: app-${{ inputs.app_name }}-${{ inputs.env }}
+          app-name: app-${{ inputs.app_name }}-${{ inputs.environment }}
           package: artifacts/

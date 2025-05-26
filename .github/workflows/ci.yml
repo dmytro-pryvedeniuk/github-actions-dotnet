@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  APP_NAME: justy
+
 on:
   push:
     branches: ["main"]
@@ -37,9 +40,8 @@ jobs:
     needs: build
     uses: ./.github/workflows/step-deploy.yml
     with:
-      env: dev
-      resource_group_name: rg-justy-dev
-      app_name: justy
+      environment: dev
+      app_name: $APP_NAME
     secrets: inherit
 
   deploy_prod:
@@ -47,7 +49,6 @@ jobs:
     needs: deploy_dev
     uses: ./.github/workflows/step-deploy.yml
     with:
-      env: prod
-      resource_group_name: rg-justy-prod
-      app_name: justy
+      environment: prod
+      app_name: $APP_NAME
     secrets: inherit
