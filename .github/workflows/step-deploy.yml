@@ -17,6 +17,10 @@ on:
       AZURE_SUBSCRIPTION_ID:
         required: true
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   resource_group_name: rg-${{ inputs.app_name }}-${{inputs.environment}}
 
