@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "infra-as-code"]
 
 permissions:
   id-token: write
@@ -35,15 +35,17 @@ jobs:
   deploy_dev:
     name: Deploy Dev
     needs: build
-    uses: dmytro-pryvedeniuk/github-actions-reusable/.github/workflows/step-deploy.yml@main
+    uses: ./.github/workflows/step-deploy.yml
     with:
-      env: dev
+      environment: dev
+      app_name: ${{ vars.APP_NAME }}
     secrets: inherit
 
   deploy_prod:
     name: Deploy Prod
     needs: deploy_dev
-    uses: dmytro-pryvedeniuk/github-actions-reusable/.github/workflows/step-deploy.yml@main
+    uses: ./.github/workflows/step-deploy.yml
     with:
-      env: prod
+      environment: prod
+      app_name: ${{ vars.APP_NAME }}
     secrets: inherit
