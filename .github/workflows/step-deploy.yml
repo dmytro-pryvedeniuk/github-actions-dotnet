@@ -50,7 +50,7 @@ jobs:
               --name ${{ inputs.environment }}-deployment-${{ github.run_number }} \
               --template-file infrastructure/main.bicep \
               --resource-group ${{ env.resource_group_name }} \
-              --parameters appName=${{ inputs.app_name }} \
+              --parameters appName=${{ inputs.app_name }} environment=${{ inputs.environment }} \
               --verbose
 
       - name: Deploy to Azure App Service
